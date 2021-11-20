@@ -14,14 +14,16 @@ const App = () => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = (year: any) => {
+    if (year) {
+      dispatch(filterByYear(year))
+    }
     setAnchorEl(null);
-    dispatch(filterByYear(year))
   };
 
   return (
     <Box display="flex" flexDirection="column" height="100%">
       <Box width="100%" bgcolor="#012433"></Box>
-      <Typography>Movie Ranking</Typography>
+      <Typography variant="h3">Movie Ranking</Typography>
       <Box display="flex" flexDirection="row">
         <Button variant="outlined" sx={{
           borderRadius: '20px',
@@ -41,12 +43,12 @@ const App = () => {
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
-        onClose={handleClose}
+        onClose={() => handleClose('')}
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}
       >
-        {years.reverse().map(year => <MenuItem onClick={(e: any) => handleClose(`20${year.toString().length == 1 ? `0${year}` : year}`)}>{`20${year.toString().length == 1 ? `0${year}` : year}`}</MenuItem>)}
+        {years.reverse().map((year) => <MenuItem key={year} onClick={(e: any) => handleClose(`20${year.toString().length == 1 ? `0${year}` : year}`)}>{`20${year.toString().length == 1 ? `0${year}` : year}`}</MenuItem>)}
       </Menu>
     </Box>
   );

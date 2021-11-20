@@ -15,7 +15,6 @@ export function Movies() {
   }
 
   const fetchData = () => {
-    console.log('triggering next page load');
     dispatch(loadNextPageAsync());
   }
 
