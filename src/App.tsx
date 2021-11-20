@@ -1,57 +1,54 @@
+import { Box, Button, Menu, MenuItem, Typography } from '@mui/material';
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
 import './App.css';
+import { useAppDispatch } from './app/hooks';
+import { Movies } from './features/movies/Movies';
+import { filterByYear } from './features/movies/moviesSlice';
 
-function App() {
+const App = () => {
+  const dispatch = useAppDispatch();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const years = Array.from(Array(17).keys())
+  const open = Boolean(anchorEl);
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = (year: any) => {
+    setAnchorEl(null);
+    dispatch(filterByYear(year))
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <Box display="flex" flexDirection="column" height="100%">
+      <Box width="100%" bgcolor="#012433"></Box>
+      <Typography>Movie Ranking</Typography>
+      <Box display="flex" flexDirection="row">
+        <Button variant="outlined" sx={{
+          borderRadius: '20px',
+          marginRight: '5px',
+        }}
+        disableRipple
+        >Top 10 Revenue</Button>
+        <Button variant="outlined" sx={{
+          borderRadius: '20px'
+        }}
+        onClick={handleClick}
+        disableRipple
+        >Top 10 Revenue Per Year</Button>
+      </Box>
+      <Movies />
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        {years.reverse().map(year => <MenuItem onClick={(e: any) => handleClose(`20${year.toString().length == 1 ? `0${year}` : year}`)}>{`20${year.toString().length == 1 ? `0${year}` : year}`}</MenuItem>)}
+      </Menu>
+    </Box>
   );
 }
 
