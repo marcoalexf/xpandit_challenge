@@ -28,6 +28,7 @@ const initialState: MoviesState = {
 export const getFirstMoviesAsync = createAsyncThunk(
   'movies/getFirstMovies',
   async (numberOfItems: number, { getState }: any) => {
+    debugger;
     const response = await getMovies({
       page: 0,
       size: numberOfItems,
@@ -85,7 +86,7 @@ export const fetchMoviesFromYear = createAsyncThunk(
 export const fetchMoviesTopTen = createAsyncThunk(
   'movies/fetchMoviesTopTenAsync',
   async (_, { getState }: any) => {
-    const movies = (await getMoviesTopTen(getState().movies.avgNumberOfElements)).data;
+    const movies = (await getMoviesTopTen(getState().movies.yearFilter)).data;
     return {
       movies
     }

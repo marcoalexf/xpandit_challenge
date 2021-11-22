@@ -4,11 +4,12 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { Movies } from './features/movies/Movies';
-import { fetchMoviesFromYear, fetchMoviesTopTen, filterByYear, setHasFilter } from './features/movies/moviesSlice';
+import { fetchMoviesFromYear, fetchMoviesTopTen, filterByYear, getFirstMoviesAsync, setHasFilter } from './features/movies/moviesSlice';
 
 const App = () => {
   const dispatch = useAppDispatch();
   const filteringByYear = useAppSelector(state => state.movies.yearFilter);
+  const avgNumItems = useAppSelector(state => state.movies.avgNumberOfElements);
   const hasFilter = useAppSelector(state => state.movies.hasFilter);
   const [anchorEl, setAnchorEl] = useState(null);
   const years = Array.from(Array(17).keys())
@@ -20,7 +21,6 @@ const App = () => {
     if (year) {
       dispatch(fetchMoviesFromYear(year));
       dispatch(filterByYear(year));
-      dispatch(setHasFilter(true));
     }
     setAnchorEl(null);
   };
@@ -28,13 +28,12 @@ const App = () => {
   const handleTopTen = () => {
     dispatch(fetchMoviesTopTen());
     dispatch(setHasFilter(true));
-    dispatch(filterByYear(''));
   }
 
   const handleResetFilter = () => {
     dispatch(setHasFilter(false));
     dispatch(filterByYear(''));
-    dispatch(fetchMoviesTopTen());
+    dispatch(getFirstMoviesAsync(avgNumItems || 10));
   }
 
   return (
@@ -45,9 +44,10 @@ const App = () => {
         <Button variant="outlined" sx={{
           borderRadius: '20px',
           marginRight: '5px',
-          backgroundColor: hasFilter && filteringByYear === '' ? '#00BAFF' : 'transparent',
-          color: hasFilter && filteringByYear === '' ? 'black' : 'grey',
+          backgroundColor: hasFilter ? '#00BAFF' : 'transparent',
+          color: hasFilter ? 'black' : 'grey',
         }}
+        disabled={filteringByYear === ''}
         onClick={() => handleTopTen()}
         disableRipple
         >Top 10 Revenue</Button>
