@@ -27,10 +27,10 @@ export const getMoviesFromYear = async (start: string) => {
     });
 }
 
-export const getMoviesTopTen = async () => {
+export const getMoviesTopTen = async (numberOfElements: string) => {
     return await client.get<IPageMovie>(`/movies`, {
         params: {
-            rank: '10'
+            size: numberOfElements
         }
     });
 }

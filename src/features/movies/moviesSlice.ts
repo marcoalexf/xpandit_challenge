@@ -10,6 +10,7 @@ export interface MoviesState {
   yearFilter: string;
   detailedMovie: IDetailedMovie | undefined;
   hasFilter: boolean;
+  avgNumberOfElements: number | undefined;
 }
 
 const initialState: MoviesState = {
@@ -21,6 +22,7 @@ const initialState: MoviesState = {
   yearFilter: '',
   hasFilter: false,
   detailedMovie: undefined,
+  avgNumberOfElements: undefined,
 };
 
 export const getFirstMoviesAsync = createAsyncThunk(
@@ -83,7 +85,7 @@ export const fetchMoviesFromYear = createAsyncThunk(
 export const fetchMoviesTopTen = createAsyncThunk(
   'movies/fetchMoviesTopTenAsync',
   async (_, { getState }: any) => {
-    const movies = (await getMoviesTopTen()).data;
+    const movies = (await getMoviesTopTen(getState().movies.avgNumberOfElements)).data;
     return {
       movies
     }
@@ -97,6 +99,9 @@ export const moviesSlice = createSlice({
   reducers: {
     setHasFilter: (state, action) => {
       state.hasFilter = action.payload;
+    },
+    setAvgNumberOfElements: (state, action) => {
+      state.avgNumberOfElements = action.payload;
     }
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -131,6 +136,6 @@ export const moviesSlice = createSlice({
   },
 });
 
-export const { setHasFilter } = moviesSlice.actions;
+export const { setHasFilter, setAvgNumberOfElements } = moviesSlice.actions;
 
 export default moviesSlice.reducer;

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { DetailedView } from '../../components/DetailedView/DetailedView';
 import { MovieList } from '../../components/InfiniteScroll/MovieList';
-import { fetchDetailedMovieAsync, getFirstMoviesAsync, loadNextPageAsync } from './moviesSlice';
+import { fetchDetailedMovieAsync, getFirstMoviesAsync, loadNextPageAsync, setAvgNumberOfElements } from './moviesSlice';
 
 export function Movies() {
   const dispatch = useAppDispatch();
@@ -23,6 +23,7 @@ export function Movies() {
     // Assume every item on the list is at least 60px in height
     const avgNumberOfItems = Math.floor(height / 60);
     dispatch(getFirstMoviesAsync(avgNumberOfItems));
+    dispatch(setAvgNumberOfElements(avgNumberOfItems));
   }
 
   const fetchData = () => {
