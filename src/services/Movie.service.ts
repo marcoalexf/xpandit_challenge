@@ -18,3 +18,19 @@ export const getMovies = async (page?: IPagination) => {
 export const getDetailedMovie = async (id: string) => {
     return await client.get<IDetailedMovie>(`/movies/${id}`);
 }
+
+export const getMoviesFromYear = async (start: string) => {
+    return await client.get<IPageMovie>(`/movies`, {
+        params: {
+            start
+        }
+    });
+}
+
+export const getMoviesTopTen = async () => {
+    return await client.get<IPageMovie>(`/movies`, {
+        params: {
+            rank: '10'
+        }
+    });
+}
