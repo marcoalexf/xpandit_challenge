@@ -1,5 +1,5 @@
-import axios from "axios"
-import { IPageable } from "../models/IPageable.interface";
+import axios from "axios";
+import { IDetailedMovie } from "../models/IDetailedMovie.interface";
 import { IPageMovie } from "../models/IPageMovie.interface";
 import { IPagination } from "../models/IPagination.interface";
 
@@ -13,4 +13,8 @@ export const getMovies = async (page?: IPagination) => {
             ...page
         }
     });
+}
+
+export const getDetailedMovie = async (id: string) => {
+    return await client.get<IDetailedMovie>(`/movies/${id}`);
 }

@@ -1,8 +1,8 @@
-import { Divider, IconButton, Typography } from '@mui/material'
-import { Box } from '@mui/system'
-import React, { useState } from 'react'
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Divider, IconButton } from '@mui/material';
+import { Box } from '@mui/system';
+import React, { useState } from 'react';
+import { FC } from '../../types/FC';
 
 interface ListHeaderProps {
     titleText: string;
@@ -11,7 +11,7 @@ interface ListHeaderProps {
     positionText: string;
 }
 
-export const ListHeader: React.FC<ListHeaderProps> = ({
+export const ListHeader: FC<ListHeaderProps> = ({
     positionText,
     revenueText,
     titleText,

@@ -2,6 +2,7 @@ import { Box } from '@mui/system';
 import React, { useEffect, useRef, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { IMovie } from '../../models/IMovie.interface';
+import { FC } from '../../types/FC';
 import { ListHeader } from '../ListHeader/ListHeader';
 import { ListItem } from '../ListItem/ListItem'
 
@@ -9,10 +10,11 @@ interface InfiniteScrollProps {
     dataLength: number;
     next: any;
     items: IMovie[];
-    onContainerHeightSet: (height: number) => void
+    onContainerHeightSet: (height: number) => void;
+    onHandleMovieClick: (movieId: string) => void;
 }
 
-export const MovieList: React.FC<InfiniteScrollProps> = ({dataLength, next, items, onContainerHeightSet}) => {
+export const MovieList: FC<InfiniteScrollProps> = ({dataLength, next, items, onContainerHeightSet, onHandleMovieClick}) => {
 
     const [totalElements, setTotalElements] = useState(100);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -42,6 +44,8 @@ export const MovieList: React.FC<InfiniteScrollProps> = ({dataLength, next, item
                     {items.map((el, index) => {
                         return (
                             <ListItem key={index}
+                            id={el.id}
+                            onHandleViewMovieDetail={onHandleMovieClick}
                             title={el.title}
                             position={el.rank}
                             revenue={el.revenue}

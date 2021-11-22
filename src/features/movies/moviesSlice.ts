@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { IDetailedMovie } from '../../models/IDetailedMovie.interface';
 import { IPageMovie } from '../../models/IPageMovie.interface';
 import { IPagination } from '../../models/IPagination.interface';
 import { Movie } from '../../models/Movie';
-import { getMovies } from '../../services/Movie.service';
+import { getDetailedMovie, getMovies } from '../../services/Movie.service';
 
 export interface MoviesState {
   movies: IPageMovie | undefined;
   pagination: IPagination;
   yearFilter: string;
+  detailedMovie: IDetailedMovie | undefined;
 }
 
 const initialState: MoviesState = {
@@ -16,7 +18,8 @@ const initialState: MoviesState = {
     page: 0,
     size: 10,
   },
-  yearFilter: ''
+  yearFilter: '',
+  detailedMovie: undefined,
 };
 
 export const getFirstMoviesAsync = createAsyncThunk(
@@ -56,6 +59,16 @@ export const filterByYear = createAsyncThunk(
   }
 )
 
+export const fetchDetailedMovieAsync = createAsyncThunk(
+  'movies/detailedMovie',
+  async (movieId: string, { getState }: any) => {
+    const movie = (await getDetailedMovie(movieId)).data;
+    return {
+      movie
+    }
+  }
+)
+
 export const moviesSlice = createSlice({
   name: 'counter',
   initialState,
@@ -81,6 +94,9 @@ export const moviesSlice = createSlice({
       })
       .addCase(filterByYear.fulfilled, (state, action) => {
         state.yearFilter = action.payload.year;
+      })
+      .addCase(fetchDetailedMovieAsync.fulfilled, (state, action) => {
+        state.detailedMovie = action.payload.movie;
       })
   },
 });
